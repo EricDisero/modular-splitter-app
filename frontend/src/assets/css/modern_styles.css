@@ -1,9 +1,10 @@
-/* Enhanced Main UI Styles for Song Splitter Application */
+```css
+/* Complete modern styles for Song Splitter Application Vue Version */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -24,10 +25,9 @@ body {
   border: 1px solid rgba(139, 92, 246, 0.3);
   border-radius: 12px;
   padding: 24px;
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.3),
-    0 10px 10px -5px rgba(0, 0, 0, 0.2),
-    0 0 20px 0 rgba(139, 92, 246, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3),
+              0 10px 10px -5px rgba(0, 0, 0, 0.2),
+              0 0 20px 0 rgba(139, 92, 246, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -69,6 +69,7 @@ h1 {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Step styling */
 .step {
   display: none;
 }
@@ -159,6 +160,7 @@ h1 {
   background: linear-gradient(to right, #34d399, #60a5fa);
 }
 
+/* Error styling */
 .error {
   background-color: rgba(220, 38, 38, 0.3);
   border: 1px solid rgba(239, 68, 68, 0.5);
@@ -323,3 +325,4 @@ h1 {
     margin-top: 20px;
   }
 }
+```

@@ -1,54 +1,21 @@
 <template>
-  <div class="min-h-screen bg-background text-white">
-    <header class="py-6">
-      <div class="container mx-auto px-4 flex justify-between items-center">
-        <div>
-          <h1 class="text-2xl font-bold gradient-text">STEM SPLITTER PRO</h1>
-        </div>
-        <nav>
-          <ul class="flex space-x-4">
-            <li>
-              <router-link
-                to="/"
-                class="text-gray-300 hover:text-white px-3 py-2 rounded-md transition duration-150"
-              >
-                Home
-              </router-link>
-            </li>
-            <li v-if="isAuthenticated">
-              <router-link
-                to="/split"
-                class="text-gray-300 hover:text-white px-3 py-2 rounded-md transition duration-150"
-              >
-                Split
-              </router-link>
-            </li>
-            <li v-if="isAuthenticated">
-              <button
-                @click="handleLogout"
-                class="text-gray-300 hover:text-white px-3 py-2 rounded-md transition duration-150"
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+  <main>
+    <div class="container">
+      <h1>STEM SPLITTER PRO</h1>
 
-    <main>
-      <div class="container mx-auto py-8">
-        <router-view />
-      </div>
-    </main>
+      <router-view />
 
-    <footer class="py-6 mt-12 border-t border-gray-800">
-      <div class="container mx-auto text-center text-gray-500 text-sm">
-        <p>Powered by Pulse Academy's AI stem separation technology</p>
+      <div class="footer">
+        powered by Pulse Academy's AI stem separation technology
       </div>
-    </footer>
-  </div>
+    </div>
+  </main>
 </template>
+
+<script setup>
+// Import our CSS
+import './assets/css/modern_styles.css'
+</script>
 
 <script>
 export default {

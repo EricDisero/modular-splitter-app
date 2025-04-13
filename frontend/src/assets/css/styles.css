@@ -1,181 +1,128 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --color-primary: #8b5cf6;
-  --color-primary-light: #a78bfa;
-  --color-secondary: #3b82f6;
-  --color-background: #1e1e1e;
-  --color-background-dark: #111827;
-}
-
-html {
-  scroll-behavior: smooth;
+/* Main Styles for Song Splitter Application */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--color-background);
-  background-image: radial-gradient(
-    circle at 15% 50%,
-    var(--color-background),
-    var(--color-background-dark)
-  );
-  background-attachment: fixed;
-  color: #fff;
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
+  background: linear-gradient(135deg, #111827 0%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 1rem;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.container {
+  max-width: 380px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3),
+              0 10px 10px -5px rgba(0, 0, 0, 0.2),
+              0 0 20px 0 rgba(139, 92, 246, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 28px;
+  background: linear-gradient(to right, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.5);
-  border-radius: 4px;
+.input-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #d1d5db;
+  text-align: center;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.8);
+.input-field {
+  width: 100%;
+  padding: 12px;
+  background-color: rgba(55, 65, 81, 0.5);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  color: #e5e7eb;
+  outline: none;
+  transition: all 0.2s;
 }
 
-/* Custom transitions */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+.input-field:focus {
+  border-color: rgba(139, 92, 246, 0.8);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: linear-gradient(to right, #8b5cf6, #3b82f6);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-@layer components {
-  .container {
-    @apply max-w-4xl mx-auto px-4;
-  }
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s ease;
+}
 
-  /* Dropzone */
-  .dropzone {
-    @apply border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-purple-500 transition-colors duration-200 cursor-pointer;
-  }
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+}
 
-  .dropzone.drag-over {
-    @apply border-purple-500 bg-purple-500/10;
-  }
+.btn:hover::before {
+  left: 100%;
+}
 
-  .dropzone-icon {
-    @apply text-purple-400 mb-3;
-  }
+.footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 12px;
+  position: relative;
+}
 
-  /* Cards */
-  .card {
-    @apply bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl;
-  }
-
-  .file-info {
-    @apply bg-gray-700/50 rounded-lg p-4 mb-4;
-  }
-
-  .file-info-header {
-    @apply flex items-center;
-  }
-
-  .file-icon {
-    @apply bg-purple-500/20 p-3 rounded-lg mr-4 text-purple-400;
-  }
-
-  .success-icon {
-    @apply bg-green-500/20 p-3 rounded-lg mr-4 text-green-400;
-  }
-
-  .file-name {
-    @apply text-gray-300 text-sm font-medium truncate;
-  }
-
-  .file-details {
-    @apply text-gray-500 text-xs mt-2;
-  }
-
-  /* Buttons */
-  .btn {
-    @apply w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-white font-medium transition duration-300 flex items-center justify-center gap-2;
-  }
-
-  .btn::before {
-    content: '';
-    @apply absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all duration-600;
-  }
-
-  .btn:hover::before {
-    @apply left-[100%];
-  }
-
-  .btn:hover {
-    @apply transform -translate-y-0.5 shadow-glow;
-  }
-
-  .btn:active {
-    @apply transform translate-y-0.5;
-  }
-
-  .btn-green {
-    @apply bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500;
-  }
-
-  .btn-secondary {
-    @apply py-2 px-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium transition duration-150;
-  }
-
-  /* Form elements */
-  .input-group {
-    @apply mb-4;
-  }
-
-  .input-label {
-    @apply block text-gray-300 mb-2 text-center;
-  }
-
-  .input-field {
-    @apply w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent;
-  }
-
-  /* Error messages */
-  .error {
-    @apply bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg mb-4 text-sm;
-  }
-
-  /* Animations */
-  .animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: .5;
-    }
-  }
-
-  /* Gradient text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent;
-  }
-
-  /* Processing overlay */
-  .processing-overlay {
-    @apply fixed inset-0 bg-background-dark/90 backdrop-blur-sm flex items-center justify-center z-50 flex-col;
-  }
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 1px;
+  background: linear-gradient(to right,
+    rgba(107, 114, 128, 0),
+    rgba(107, 114, 128, 0.3),
+    rgba(107, 114, 128, 0));
 }
