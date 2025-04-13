@@ -3,9 +3,9 @@ Configuration settings for the backend application.
 Loads settings from environment variables with sensible defaults.
 """
 import os
-from pydantic import BaseSettings, Field, validator
 from typing import List
-
+from pydantic_settings import BaseSettings
+from pydantic import Field, validator
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
