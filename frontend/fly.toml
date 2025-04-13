@@ -1,0 +1,26 @@
+# fly.toml for static site
+app = "splitter-frontend"
+primary_region = "sjc" # San Jose, CA - modify as needed
+
+[build]
+  # This is a static site, so we're using the static build engine
+  builder = "staticfile"
+  [build.args]
+    # Path to your static files after running 'npm run build'
+    path = "dist"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 500
+    soft_limit = 200
+
+[[statics]]
+  guest_path = "/app/dist"
+  url_prefix = "/"
+
+[experimental]
+  auto_rollback = true

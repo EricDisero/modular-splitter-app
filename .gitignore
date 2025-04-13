@@ -1,0 +1,110 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Python virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+.DS_Store
+.npmrc
+
+# Vue build
+/dist
+/frontend/dist
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+coverage/
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.swp
+*.swo
+
+# MinIO data
+minio_data/
+
+# Audio files
+*.mp3
+*.wav
+*.flac
+*.aif
+*.aiff
+*.m4a
+*.ogg
+*.wma
+
+# Output directories
+/output/
+/processed/
+/downloads/
+
+# Logs
+*.log
+logs/
+log/
+
+# Fly.io
+.fly/
+
+# Docker
+.docker/
+
+# Media files
+/media/
+/uploads/
+
+# System files
+.DS_Store
+Thumbs.db

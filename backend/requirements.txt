@@ -1,0 +1,16 @@
+# FastAPI and ASGI server
+fastapi==0.103.1
+uvicorn==0.23.2
+python-multipart==0.0.6
+pydantic==2.3.0
+
+# Other utilities
+requests==2.31.0
+itsdangerous==2.1.2
+python-dotenv==1.0.0
+
+# MinIO for storage
+minio==7.1.15
+
+# For production
+gunicorn==21.2.0

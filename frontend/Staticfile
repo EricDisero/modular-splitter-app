@@ -1,0 +1,3 @@
+/* /index.html 200
+# Ensure all routes are handled by SPA
+# Redirects all requests to index.html with status 200

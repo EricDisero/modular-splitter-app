@@ -1,0 +1,25 @@
+# FastAPI and ASGI server
+fastapi==0.103.1
+uvicorn==0.23.2
+python-multipart==0.0.6
+pydantic==2.3.0
+
+# Audio processing
+numpy==1.24.3
+soundfile==0.12.1
+librosa==0.10.1
+lameenc==1.4.2
+
+# Demucs for stem separation
+demucs==4.0.1
+
+# MinIO for storage
+minio==7.1.15
+
+# PyTorch (versions depends on CUDA compatibility)
+# For CUDA 11.8:
+torch==2.0.1
+torchaudio==2.0.2
+
+# For production
+gunicorn==21.2.0
