@@ -2,37 +2,79 @@
   <div class="max-w-4xl mx-auto">
     <h2 class="text-2xl font-bold mb-6">Split Audio</h2>
 
-    <div v-if="error" class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg mb-6">
+    <div v-if="error" class="error">
       {{ error }}
     </div>
 
     <!-- Step 1: Upload -->
-    <div v-if="currentStep === 'upload'" class="bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl">
+    <div v-if="currentStep === 'upload'" class="card">
       <h3 class="text-xl font-semibold mb-4">Upload Your Audio File</h3>
 
-      <FileUploader
-        @file-selected="handleFileSelected"
-        @upload-success="handleUploadSuccess"
-        @upload-error="handleUploadError"
+      <div
+        class="dropzone"
+        :class="{ 'drag-over': isDragging }"
+        @dragover.prevent="isDragging = true"
+        @dragleave.prevent="isDragging = false"
+        @drop.prevent="handleFileDrop"
+        @click="triggerFileInput"
+      >
+        <div class="dropzone-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+        </div>
+        <div class="input-label">Drop your audio file here</div>
+        <div class="text-gray-500 text-sm">or click to browse</div>
+        <div class="text-gray-500 text-xs mt-2">Supports .mp3, .wav, .flac, .aif</div>
+      </div>
+
+      <input
+        ref="fileInput"
+        type="file"
+        class="hidden"
+        accept=".mp3,.wav,.flac,.aif,.aiff"
+        @change="handleFileChange"
       />
+
+      <div v-if="uploading" class="mt-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex-1 truncate mr-2">
+            <p class="text-gray-300 text-sm font-medium truncate">{{ file?.name }}</p>
+            <p class="text-gray-500 text-xs">{{ formatFileSize(file?.size || 0) }}</p>
+          </div>
+        </div>
+
+        <div class="w-full bg-gray-700 rounded-full h-2.5">
+          <div class="bg-purple-600 h-2.5 rounded-full" :style="`width: ${uploadProgress}%`"></div>
+        </div>
+
+        <div class="flex justify-between mt-2 text-xs text-gray-500">
+          <span>{{ uploadProgress }}%</span>
+          <span>{{ formatFileSize(uploadedBytes) }} / {{ formatFileSize(file?.size || 0) }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Step 2: Split -->
-    <div v-else-if="currentStep === 'split'" class="bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl">
+    <div v-else-if="currentStep === 'split'" class="card">
       <h3 class="text-xl font-semibold mb-4">Process Audio</h3>
 
-      <div class="mb-6 p-4 bg-gray-700/50 rounded-lg">
-        <div class="flex items-center">
-          <div class="bg-purple-500/20 p-3 rounded-lg mr-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+      <div class="file-info">
+        <div class="file-info-header">
+          <div class="file-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-300 truncate">
+            <p class="file-name">
               {{ uploadedFileName }}
             </p>
-            <p class="text-xs text-gray-500">
+            <p class="text-gray-500 text-xs">
               {{ formatFileSize(uploadedFileSize) }}
             </p>
           </div>
@@ -45,19 +87,22 @@
 
       <button
         @click="startSplitting"
-        class="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-white font-medium transition duration-300 flex items-center justify-center"
+        class="btn"
         :disabled="isProcessing"
       >
         <svg v-if="isProcessing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
+        <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+        </svg>
         <span>{{ isProcessing ? 'Processing...' : 'Split Audio' }}</span>
       </button>
     </div>
 
     <!-- Step 3: Processing -->
-    <div v-else-if="currentStep === 'processing'" class="bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl">
+    <div v-else-if="currentStep === 'processing'" class="card">
       <h3 class="text-xl font-semibold mb-4">Processing Your Audio</h3>
 
       <ProcessingAnimation :progress="processingProgress" :message="processingMessage" />
@@ -73,16 +118,21 @@
 <script setup>
 import { ref, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import FileUploader from '../components/FileUploader.vue'
 import ProcessingAnimation from '../components/ProcessingAnimation.vue'
-import { requestSplit, pollJobStatus } from '../utils/api'
+import { uploadAudio, requestSplit, pollJobStatus } from '../utils/api'
 
 const router = useRouter()
 
 // State
 const currentStep = ref('upload')
 const error = ref('')
-const uploadedFile = ref(null)
+const file = ref(null)
+const fileInput = ref(null)
+const isDragging = ref(false)
+const uploading = ref(false)
+const uploadComplete = ref(false)
+const uploadProgress = ref(0)
+const uploadedBytes = ref(0)
 const uploadedFileName = ref('')
 const uploadedFileSize = ref(0)
 const uploadedObjectName = ref('')
@@ -108,19 +158,82 @@ const processingMessage = computed(() => {
 })
 
 // Handlers
-function handleFileSelected(file) {
-  uploadedFile.value = file
-  uploadedFileName.value = file.name
-  uploadedFileSize.value = file.size
+function triggerFileInput() {
+  fileInput.value.click()
 }
 
-function handleUploadSuccess(data) {
-  uploadedObjectName.value = data.object_name
-  currentStep.value = 'split'
+function handleFileChange(event) {
+  if (event.target.files.length) {
+    const selectedFile = event.target.files[0]
+    validateAndUploadFile(selectedFile)
+  }
 }
 
-function handleUploadError(errorMessage) {
-  error.value = errorMessage || 'An error occurred during upload'
+function handleFileDrop(event) {
+  isDragging.value = false
+
+  if (event.dataTransfer.files.length) {
+    const droppedFile = event.dataTransfer.files[0]
+    validateAndUploadFile(droppedFile)
+  }
+}
+
+function validateAndUploadFile(selectedFile) {
+  // Check file type
+  const validTypes = [
+    'audio/mpeg',
+    'audio/mp3',
+    'audio/wav',
+    'audio/flac',
+    'audio/aiff',
+    'audio/x-aiff'
+  ]
+
+  // Get file extension
+  const extension = selectedFile.name.split('.').pop().toLowerCase()
+  const validExtensions = ['mp3', 'wav', 'flac', 'aif', 'aiff']
+
+  if (!validTypes.includes(selectedFile.type) && !validExtensions.includes(extension)) {
+    error.value = 'Invalid file type. Please upload MP3, WAV, FLAC, or AIF files only.'
+    return
+  }
+
+  // Check file size (500MB limit)
+  if (selectedFile.size > 500 * 1024 * 1024) {
+    error.value = 'File too large. Maximum file size is 500MB.'
+    return
+  }
+
+  // Set file and start upload
+  file.value = selectedFile
+  startUpload()
+}
+
+async function startUpload() {
+  if (!file.value) return
+
+  uploading.value = true
+  uploadProgress.value = 0
+  uploadedBytes.value = 0
+  error.value = ''
+
+  try {
+    const result = await uploadAudio(file.value, (progress) => {
+      uploadProgress.value = progress
+      uploadedBytes.value = Math.floor(file.value.size * (progress / 100))
+    })
+
+    uploadComplete.value = true
+    uploadedFileName.value = result.filename
+    uploadedFileSize.value = result.size
+    uploadedObjectName.value = result.object_name
+    currentStep.value = 'split'
+  } catch (err) {
+    console.error('Upload error:', err)
+    error.value = err.response?.data?.detail || 'Failed to upload file'
+  } finally {
+    uploading.value = false
+  }
 }
 
 async function startSplitting() {

@@ -1,11 +1,9 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-    <header class="container mx-auto px-4 py-6">
-      <div class="flex justify-between items-center">
-        <div class="flex items-center">
-          <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
-            {{ appTitle }}
-          </h1>
+  <div class="min-h-screen bg-background text-white">
+    <header class="py-6">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold gradient-text">STEM SPLITTER PRO</h1>
         </div>
         <nav>
           <ul class="flex space-x-4">
@@ -38,36 +36,83 @@
       </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-      <router-view />
+    <main>
+      <div class="container mx-auto py-8">
+        <router-view />
+      </div>
     </main>
 
-    <footer class="container mx-auto px-4 py-6 mt-12 border-t border-gray-800">
-      <div class="text-center text-gray-500 text-sm">
+    <footer class="py-6 mt-12 border-t border-gray-800">
+      <div class="container mx-auto text-center text-gray-500 text-sm">
         <p>Powered by Pulse Academy's AI stem separation technology</p>
       </div>
     </footer>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from './stores/auth'
+<script>
+export default {
+  data() {
+    return {
+      audioName: '',
+    };
+  },
+  methods: {
+    browseFile() {
+      this.$refs.fileInput.click();
+    },
+    handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.audioName = file.name;
+        this.uploadFile(file);
+      }
+    },
+    handleDrop(event) {
+      const file = event.dataTransfer.files[0];
+      if (file) {
+        this.audioName = file.name;
+        this.uploadFile(file);
+      }
+    },
+    uploadFile(file) {
+      const formData = new FormData();
+      formData.append('file', file);
 
-const appTitle = import.meta.env.VITE_APP_TITLE || 'Stem Splitter Pro'
-const router = useRouter()
-const authStore = useAuthStore()
+      fetch('http://localhost:8000/api/upload_audio/', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('afterUploading').style.display = 'block';
+          document.getElementById('beforeUploading').style.display = 'none';
+        });
+    },
+    submitSplit() {
+      // Optional: show processing animation
+      if (window.showProcessingAnimation) {
+        window.showProcessingAnimation();
+      }
 
-const isAuthenticated = computed(() => authStore.isAuthenticated)
-
-async function handleLogout() {
-  await authStore.logout()
-  router.push('/')
-}
-
-onMounted(() => {
-  // You might want to check the authentication status on page load
-  // For example, by making a request to a validation endpoint
-})
+      fetch('http://localhost:8000/api/split/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ file_name: this.audioName }),
+        credentials: 'include',
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.isFinished === 'exist') {
+            document.getElementById('top_label').textContent = 'FOLDER WITH SONG NAME EXISTS';
+          } else {
+            document.getElementById('top_label').textContent = 'ERROR OCCURRED';
+          }
+          document.getElementById('afterUploading').style.display = 'none';
+          document.getElementById('beforeUploading').style.display = 'block';
+        });
+    },
+  }
+};
 </script>

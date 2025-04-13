@@ -2,11 +2,11 @@
   <div class="max-w-4xl mx-auto">
     <h2 class="text-2xl font-bold mb-6">Splitting Results</h2>
 
-    <div v-if="error" class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg mb-6">
+    <div v-if="error" class="error">
       {{ error }}
     </div>
 
-    <div v-if="isLoading" class="bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl flex justify-center">
+    <div v-if="isLoading" class="card flex justify-center">
       <div class="text-center">
         <svg class="animate-spin h-10 w-10 text-purple-400 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div v-else-if="jobStatus === 'completed'" class="bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl">
+    <div v-else-if="jobStatus === 'completed'" class="card">
       <div class="mb-6">
         <h3 class="text-xl font-semibold mb-2">Splitting Complete!</h3>
         <p class="text-gray-300">Your audio has been successfully split into the following stems:</p>
@@ -58,7 +58,7 @@
         <a
           :href="zipDownloadUrl"
           download
-          class="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-white font-medium transition duration-300 flex items-center justify-center"
+          class="btn"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -70,14 +70,16 @@
       <div class="mt-6 text-center">
         <router-link
           to="/split"
-          class="inline-block py-2 px-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium transition duration-150"
+          class="btn-secondary"
         >
           Split Another Track
         </router-link>
       </div>
     </div>
 
-    <div v-else-if="jobStatus === 'processing'" class="bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl">
+    <div v-else-if="jobStatus === 'processing'" class="card">
+      <h3 class="text-xl font-semibold mb-4">Processing Your Audio</h3>
+
       <ProcessingAnimation :progress="processingProgress" :message="processingMessage" />
 
       <div class="mt-6 text-center text-sm text-gray-400">
@@ -85,7 +87,7 @@
       </div>
     </div>
 
-    <div v-else-if="jobStatus === 'failed'" class="bg-gray-800/30 backdrop-blur-md border border-red-500/30 rounded-xl p-6 shadow-xl">
+    <div v-else-if="jobStatus === 'failed'" class="card">
       <div class="text-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -97,7 +99,7 @@
         </div>
         <router-link
           to="/split"
-          class="inline-block py-2 px-4 bg-purple-600 hover:bg-purple-500 rounded-lg text-white font-medium transition duration-150"
+          class="btn-secondary"
         >
           Try Again
         </router-link>

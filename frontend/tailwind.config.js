@@ -35,6 +35,8 @@ module.exports = {
           '900': '#1e3a8a',
           '950': '#172554',
         },
+        'background': '#1e1e1e',
+        'background-dark': '#111827',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -50,6 +52,10 @@ module.exports = {
         'glow': '0 0 15px rgba(139, 92, 246, 0.5)',
       },
     },
+    fontFamily: {
+      'sans': ['Poppins', 'ui-sans-serif', 'system-ui'],
+      'poppins': ['Poppins', 'sans-serif'],
+    }
   },
   plugins: [],
 }

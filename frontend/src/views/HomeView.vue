@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-center min-h-[70vh]">
-    <div class="max-w-md w-full bg-gray-800/30 backdrop-blur-md border border-purple-500/30 rounded-xl p-6 shadow-xl">
-      <h2 class="text-center text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+    <div class="max-w-md w-full card">
+      <h2 class="text-center text-2xl font-bold gradient-text mb-6">
         STEM SPLITTER PRO
       </h2>
 
@@ -11,48 +11,45 @@
         </div>
         <router-link
           to="/split"
-          class="w-full block text-center py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-white font-medium transition duration-300"
+          class="btn"
         >
           Start Splitting
         </router-link>
       </div>
 
       <div v-else>
-        <div v-if="validationError" class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg mb-4">
+        <div v-if="validationError" class="error">
           {{ validationError }}
         </div>
 
         <form @submit.prevent="validateLicense" class="space-y-4">
-          <div>
-            <label for="license-key" class="block text-sm font-medium text-gray-300 mb-1">License Key</label>
+          <div class="input-group">
+            <label for="license-key" class="input-label">Enter your license key to begin</label>
             <input
               id="license-key"
               v-model="licenseKey"
               type="text"
               placeholder="XXXX-XXXX-XXXX-XXXX"
-              class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              class="input-field"
               required
             />
           </div>
 
-          <div>
-            <button
-              type="submit"
-              class="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-white font-medium transition duration-300 flex items-center justify-center"
-              :disabled="isLoading"
-            >
-              <svg v-if="isLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <span>{{ isLoading ? 'Validating...' : 'Validate License' }}</span>
-            </button>
-          </div>
+          <button
+            type="submit"
+            class="btn"
+            :disabled="isLoading"
+          >
+            <svg v-if="isLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
+            <span>{{ isLoading ? 'Validating...' : 'Validate License' }}</span>
+          </button>
         </form>
-
-        <div class="mt-6 text-center text-sm text-gray-500">
-          <p>Need a license? Contact our sales team to purchase one.</p>
-        </div>
       </div>
     </div>
   </div>
