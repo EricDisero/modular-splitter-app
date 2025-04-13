@@ -108,3 +108,9 @@ log/
 # System files
 .DS_Store
 Thumbs.db
+
+# Virtual environments
+venv_backend/
+venv_splitter/
+**/venv_backend/
+**/venv_splitter/
